@@ -4,6 +4,47 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-A = np.linspace(-10, 10, 100)
-B = np.linspace(-5, 5, 100)
+def calcula_erro(a, b, x, y):
+    erro = 0
 
+    # Somar os valores de cada erro da reta
+    for i in range(len(y)):
+        erro += (a * x[i] + b - y[i])**2
+    
+    return erro
+
+# array com valores especificados 
+A = np.linspace(-10, 10, 100) # 100 números de 0.2 em 0.2
+B = np.linspace(-5, 5, 100) # 100 números de 0.1 em 0.1
+
+data = pd.read_excel("./dados/data.xlsx")
+data_x = data['x']
+data_y = data['y']
+
+# Cria uma matriz de 100 por 100 apenas com 0 --> 10.000 retas a serem criadas
+erros = np.zeros(shape= (100, 100))
+
+# Valor de referência comparável com o resto da lista. Precisa pertencer ao conjunto (para ser comparável)
+menor = calcula_erro(A[0], B[0], data_x, data_y)
+
+# CASO o menor seja esse mesmo para não dar pau (chance de 1 em 10000....)
+valores = [A[0], B[0], menor]
+
+for i, a in enumerate(A):
+    for j, b in enumerate(B):
+        # Calcula todos os erros de cada linha do conjunto
+        erro = calcula_erro(a, b, data_x, data_y)
+
+        # Coloca o erro na matriz de acordo com a posição do índice
+        erros[i][j] = erro
+        
+        if erro < menor:
+            menor = erro
+            valores = [a, b, menor]
+
+# Pegar a e b do erro mínimo
+a, b = valores[0], valores[1]
+plt.plot(data_x, data_y, 'bo')
+# Criar a reta com o erro mínimo
+plt.plot(data_x, a * data_x + b, 'g')
+plt.show()
