@@ -4,6 +4,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+def calcula_A(y, x):
+    a = np.dot(x - np.mean(x), y - np.mean(y)) / np.dot(x - np.mean(x), x - np.mean(x))
+    return a
+
+def calcula_B(y, x):
+    b = np.mean(y) - a * np.mean(x)
+    return b
+
 def calcula_erro(a, b, x, y):
     erro = 0
 
@@ -42,9 +50,25 @@ for i, a in enumerate(A):
             menor = erro
             valores = [a, b, menor]
 
+print(valores)
+
 # Pegar a e b do erro mínimo
 a, b = valores[0], valores[1]
+
+# Comparar com a aula passada
+minimos_a, minimos_b = calcula_A(data_y, data_x), calcula_B(data_y, data_x)
+
 plt.plot(data_x, data_y, 'bo')
 # Criar a reta com o erro mínimo
-plt.plot(data_x, a * data_x + b, 'g')
+plt.plot(data_x, a * data_x + b, 'g', label= 'Aula 3 (Arrays)')
+
+# Comparar com o da aula passada
+plt.plot(data_x, minimos_a * data_x + minimos_b, 'r', label= 'Aula 2 (Derivadas)')
+plt.legend()
+plt.figure()
+fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+
+X, Y = np.meshgrid(A, B)
+ax.plot_surface(X, Y, erros, cmap="viridis")
+
 plt.show()
