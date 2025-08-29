@@ -60,10 +60,10 @@ minimos_a, minimos_b = calcula_A(data_y, data_x), calcula_B(data_y, data_x)
 
 plt.plot(data_x, data_y, 'bo')
 # Criar a reta com o erro mínimo
-plt.plot(data_x, a * data_x + b, 'g', label= 'Aula 3 (Arrays)')
+plt.plot(data_x, a * data_x + b, 'r', label= 'Aula 3 (Arrays)')
 
 # Comparar com o da aula passada
-plt.plot(data_x, minimos_a * data_x + minimos_b, 'r', label= 'Aula 2 (Derivadas)')
+plt.plot(data_x, minimos_a * data_x + minimos_b, 'g', label= 'Aula 2 (Derivadas)')
 plt.legend()
 plt.figure()
 fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
